@@ -1,24 +1,23 @@
 import React from 'react';
-import { mount } from 'enzyme';
-
 import Root from 'Root';
+import { mount } from 'enzyme';
 
 import CommentBox from 'components/CommentBox';
 
 import * as utils from 'tests/utils';
 
-function mountRootedComponent() {
-	return mount(
-		<Root>
-			<CommentBox />
-		</Root>
-	);
-}
-
 describe('renders without errors', () => {
 	let wrapper;
 	beforeEach(() => {
-		wrapper = mountRootedComponent();
+		wrapper = mount(
+			<Root>
+				<CommentBox />
+			</Root>
+		);
+	});
+
+	afterEach(() => {
+		wrapper.unmount();
 	});
 
 	test('should render 1 textarea', () => {
@@ -30,17 +29,17 @@ describe('renders without errors', () => {
 		let button = wrapper.find('button');
 		expect(button.length).toEqual(1);
 	});
-
-	afterEach(() => {
-		wrapper.unmount();
-	});
 });
 
 describe('textarea behaviour', () => {
 	let wrapper;
 	const testStr = 'test';
 	beforeEach(() => {
-		wrapper = mountRootedComponent();
+		wrapper = mount(
+			<Root>
+				<CommentBox />
+			</Root>
+		);
 		utils.onChangeHandler(wrapper.find('textarea'), testStr);
 		wrapper.update();
 	});

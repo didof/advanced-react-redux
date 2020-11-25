@@ -1,3 +1,5 @@
+import React from 'react';
+
 /**
  * @function onChangeHandler
  * @param {HTMLElement} element whose change listener is called
