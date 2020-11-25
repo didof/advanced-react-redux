@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import * as actions from 'actions';
 
-export default function CommentBox() {
+function CommentBox(props) {
 	const [comment, setComment] = useState('');
 
 	function onChangeHandler(event) {
@@ -9,15 +11,14 @@ export default function CommentBox() {
 
 	function onSubmitHandler(event) {
 		event.preventDefault();
-		console.log(comment);
+
+		props.saveComment(comment);
+
 		setComment((prev) => '');
 	}
 
 	return (
-		<form
-			id='form-comment'
-			onSubmit={onSubmitHandler}
-		>
+		<form id='form-comment' onSubmit={onSubmitHandler}>
 			<h4>Add a Comment</h4>
 			<textarea value={comment} onChange={onChangeHandler} />
 			<div>
@@ -28,3 +29,5 @@ export default function CommentBox() {
 		</form>
 	);
 }
+
+export default connect(null, actions)(CommentBox);
