@@ -1,14 +1,24 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 
+import Root from 'Root';
+
 import CommentBox from 'components/CommentBox';
 
-import { onChangeHandler, onSubmitDefaultPrevented } from 'tests/utils';
+import * as utils from 'tests/utils';
+
+function mountRootedComponent() {
+	return mount(
+		<Root>
+			<CommentBox />
+		</Root>
+	);
+}
 
 describe('renders without errors', () => {
 	let wrapper;
 	beforeEach(() => {
-		wrapper = mount(<CommentBox />);
+		wrapper = mountRootedComponent();
 	});
 
 	test('should render 1 textarea', () => {
@@ -30,8 +40,8 @@ describe('textarea behaviour', () => {
 	let wrapper;
 	const testStr = 'test';
 	beforeEach(() => {
-		wrapper = shallow(<CommentBox />);
-		onChangeHandler(wrapper.find('textarea'), testStr);
+		wrapper = mountRootedComponent();
+		utils.onChangeHandler(wrapper.find('textarea'), testStr);
 		wrapper.update();
 	});
 
@@ -40,7 +50,7 @@ describe('textarea behaviour', () => {
 	});
 
 	test('should get empty after the form is submitted', () => {
-		onSubmitDefaultPrevented(wrapper.find('form'));
+		utils.onSubmitDefaultPrevented(wrapper.find('form'));
 		wrapper.update();
 		expect(wrapper.find('textarea').prop('value')).toEqual('');
 	});
