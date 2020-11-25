@@ -1,5 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 export default function CommentBox() {
-	return <div>Comment Box</div>;
+	const [comment, setComment] = useState('');
+
+	function onChangeHandler(event) {
+		setComment((prev) => event.target.value);
+	}
+
+	function onSubmitHandler(event) {
+		event.preventDefault();
+		console.log(comment);
+		setComment((prev) => '');
+	}
+
+	function onMouseEnterHandler(event) {
+		document.querySelector('textarea').focus();
+	}
+
+	return (
+		<form
+			id='form-comment'
+			onSubmit={onSubmitHandler}
+			onMouseEnter={onMouseEnterHandler}
+		>
+			<h4>Add a Comment</h4>
+			<textarea value={comment} onChange={onChangeHandler} />
+			<div>
+				<button type='submit' form='form-comment'>
+					Submit Comment
+				</button>
+			</div>
+		</form>
+	);
 }
