@@ -28,24 +28,14 @@ describe('renders without errors', () => {
 
 describe('textarea behaviour', () => {
 	let wrapper;
-	// let textarea;
 	beforeEach(() => {
 		wrapper = shallow(<CommentBox />);
-		console.log(wrapper.innerHTML);
-		// textarea = wrapper.find('textarea');
 	});
 
-	test('si', () => {});
-
-	// test('should trigger onChange listener when typed in', () => {
-	// 	const str = 'test';
-	// 	// onChangeHandler(textarea, str);
-	// 	textarea.simulate('change', {
-	// 		target: {
-	// 			value: str,
-	// 		},
-	// 	});
-	// 	wrapper.update();
-	// 	expect(textarea.prop('value')).toEqual(str);
-	// });
+	test('should trigger onChange listener when typed in', () => {
+		const testStr = 'test';
+		onChangeHandler(wrapper.find('textarea'), testStr);
+		wrapper.update();
+		expect(wrapper.find('textarea').prop('value')).toEqual(testStr);
+	});
 });
