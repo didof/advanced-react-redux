@@ -3,7 +3,7 @@ import { mount, shallow } from 'enzyme';
 
 import CommentBox from 'components/CommentBox';
 
-import { onChangeHandler } from 'tests/utils';
+import { onChangeHandler, onSubmitDefaultPrevented } from 'tests/utils';
 
 describe('renders without errors', () => {
 	let wrapper;
@@ -28,14 +28,20 @@ describe('renders without errors', () => {
 
 describe('textarea behaviour', () => {
 	let wrapper;
+	const testStr = 'test';
 	beforeEach(() => {
 		wrapper = shallow(<CommentBox />);
+		onChangeHandler(wrapper.find('textarea'), testStr);
+		wrapper.update();
 	});
 
 	test('should trigger onChange listener when typed in', () => {
-		const testStr = 'test';
-		onChangeHandler(wrapper.find('textarea'), testStr);
-		wrapper.update();
 		expect(wrapper.find('textarea').prop('value')).toEqual(testStr);
+	});
+
+	test('should get empty after the form is submitted', () => {
+		onSubmitDefaultPrevented(wrapper.find('form'));
+		wrapper.update();
+		expect(wrapper.find('textarea').prop('value')).toEqual('');
 	});
 });

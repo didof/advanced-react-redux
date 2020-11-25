@@ -11,3 +11,7 @@ export function onChangeHandler(element, value = 'test') {
 		},
 	});
 }
+
+export function onSubmitDefaultPrevented(element) {
+	element.simulate('submit', { preventDefault: () => {} });
+}
