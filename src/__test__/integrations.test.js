@@ -45,7 +45,7 @@ describe('commentBox', () => {
 				wrapper.update();
 				expect(wrapper.find('ul').children().length).toEqual(10);
 				wrapper.unmount();
-				done();
+				done(); // note the calling of done as last thing
 			});
 		});
 	});

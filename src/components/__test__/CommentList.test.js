@@ -1,12 +1,14 @@
 import Root from 'Root';
-import * as enzyme from 'enzyme';
+import { mount } from 'enzyme';
 import { getRandomIntInclusive } from 'utils/math';
 import { generateItems } from 'utils/generate';
+import findBy from 'utils/test/findBy';
+import DOMref from 'utils/test/DOMreferences';
 
 import CommentList from 'components/CommentList';
 
 function setupWrapper(initialState = {}) {
-	return enzyme.mount(
+	return mount(
 		<Root initialState={initialState}>
 			<CommentList />
 		</Root>
@@ -22,24 +24,30 @@ function createInitialState(commentsArr) {
 describe('renders without errors', () => {
 	let wrapper;
 
-	test('should render 1 ul if no comments supplied', () => {
+	test('should render [wrapper_comment-list] element', () => {
 		wrapper = setupWrapper();
-		let ul = wrapper.find('ul');
-		expect(ul.length).toEqual(1);
+		let element = findBy.attribute.test(wrapper, DOMref.commentList.wrapper);
+		expect(element.length).toEqual(1);
 	});
 
-	test('should render 1 li if 1 comment supplied', () => {
+	test('should render [list_comment-list] element if no comments supplied', () => {
+		wrapper = setupWrapper();
+		let element = findBy.attribute.test(wrapper, DOMref.commentList.list);
+		expect(element.length).toEqual(1);
+	});
+
+	test('should render [listItem_comment-list] element if 1 comment supplied', () => {
 		wrapper = setupWrapper(createInitialState(['comment 1']));
-		let li = wrapper.find('li');
-		expect(li.length).toBe(1);
+		let element = findBy.attribute.test(wrapper, DOMref.commentList.listItem);
+		expect(element.length).toBe(1);
 	});
 
-	test('should render the same number of li and comments supplied', () => {
+	test('should render the same number of [listItem_comment-list] element and comments supplied', () => {
 		let randomQuantity = getRandomIntInclusive(1, 5);
 		let randomComments = generateItems(randomQuantity, 'comment');
 		wrapper = setupWrapper(createInitialState(randomComments));
-		let li = wrapper.find('li');
-		expect(li.length).toBe(randomQuantity);
+		let element = findBy.attribute.test(wrapper, DOMref.commentList.listItem);
+		expect(element.length).toBe(randomQuantity);
 	});
 });
 
@@ -48,10 +56,24 @@ describe('li behaviour', () => {
 	const comment1 = 'comment 1';
 	const comment2 = 'comment 2';
 
-	test('should make visible the text contained in li', () => {
+	test('should make visible the text contained in [listItem_comment-list] element', () => {
 		wrapper = setupWrapper(createInitialState([comment1, comment2]));
 		let text = wrapper.render().text();
 		expect(text).toContain(comment1);
 		expect(text).toContain(comment2);
+	});
+
+	test('should remove the [listItem_comment-list] element when clicked on', () => {
+		wrapper = setupWrapper(createInitialState([comment1, comment2]));
+		let elements = findBy.attribute.test(wrapper, DOMref.commentList.listItem);
+		expect(elements.length).toEqual(2);
+		let firstElement = elements.first();
+		firstElement.simulate('click');
+		wrapper.update();
+		let updatedElements = findBy.attribute.test(
+			wrapper,
+			DOMref.commentList.listItem
+		);
+		expect(updatedElements.length).toEqual(1);
 	});
 });

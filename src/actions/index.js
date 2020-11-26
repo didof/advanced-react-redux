@@ -27,9 +27,7 @@ export function saveComment(comment) {
 }
 
 export function removeComment(index) {
-	let action = buildAction(REMOVE_COMMENT, index);
-	console.log(action);
-	return action;
+	return buildAction(REMOVE_COMMENT, index);
 }
 
 export function fetchComments() {
