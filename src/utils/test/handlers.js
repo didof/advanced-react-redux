@@ -1,4 +1,4 @@
-export function onChange(component, value) {
+function onChange(component, value) {
 	return component.simulate('change', {
 		target: {
 			value,
@@ -6,8 +6,15 @@ export function onChange(component, value) {
 	});
 }
 
-export function onSubmitDefaultPrevented(component) {
+function onSubmitDefaultPrevented(component) {
 	return component.simulate('submit', {
 		preventDefault: () => {},
 	});
 }
+
+const handlers = {
+	onChange,
+	onSubmitDefaultPrevented,
+};
+
+export default handlers;

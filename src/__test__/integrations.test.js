@@ -6,7 +6,7 @@ import Root from 'Root';
 import App from 'components/App';
 
 import findBy from 'utils/test/findBy';
-import { commentBox } from 'utils/test/DOMreferences';
+import DOMref from 'utils/test/DOMreferences';
 import { generateItems } from 'utils/generate';
 
 const mockedResponse = {
@@ -22,7 +22,7 @@ afterEach(() => {
 	moxios.uninstall();
 });
 
-describe('commentBox', () => {
+describe('CommentBox', () => {
 	test('should fetch a list of comments from API and display them', (done) => {
 		// Attemp to render the entire app
 		const wrapper = mount(
@@ -34,7 +34,7 @@ describe('commentBox', () => {
 		// Find the fetchComments button and click it
 		const button = findBy.attribute.test(
 			wrapper,
-			commentBox.button.fetchComments
+			DOMref.commentBox.button.fetchComments
 		);
 		button.simulate('click');
 

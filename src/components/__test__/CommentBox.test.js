@@ -1,10 +1,11 @@
 import React from 'react';
-import Root from 'Root';
 import { mount } from 'enzyme';
+import DOMref from 'utils/test/DOMreferences';
+import findBy from 'utils/test/findBy';
+import handlers from 'utils/test/handlers';
 
+import Root from 'Root';
 import CommentBox from 'components/CommentBox';
-
-import { onSubmitDefaultPrevented, onChange } from 'utils/test/handlers';
 
 describe('renders without errors', () => {
 	let wrapper;
@@ -20,18 +21,42 @@ describe('renders without errors', () => {
 		wrapper.unmount();
 	});
 
-	test('should render 1 textarea', () => {
-		let texarea = wrapper.find('textarea');
-		expect(texarea.length).toEqual(1);
+	test('should render 1 [wrapper_comment-box] element', () => {
+		let element = findBy.attribute.test(wrapper, DOMref.commentBox.wrapper);
+		expect(element.length).toEqual(1);
 	});
 
-	test('should render 2 buttons', () => {
-		let button = wrapper.find('button');
-		expect(button.length).toEqual(2);
+	test('should render 1 [form_comment-box] element', () => {
+		let element = findBy.attribute.test(wrapper, DOMref.commentBox.form);
+		expect(element.length).toEqual(1);
+	});
+
+	test('should render 1 [header_comment-box] element', () => {
+		let element = findBy.attribute.test(wrapper, DOMref.commentBox.header);
+		expect(element.length).toEqual(1);
+	});
+
+	test('should render 1 [textarea_comment-box] element', () => {
+		let element = findBy.attribute.test(wrapper, DOMref.commentBox.textarea);
+		expect(element.length).toEqual(1);
+	});
+
+	test('should render [fetch_comment-box] && [submit_comment-box] elements', () => {
+		let element1 = findBy.attribute.test(
+			wrapper,
+			DOMref.commentBox.button.fetchComments
+		);
+		let element2 = findBy.attribute.test(
+			wrapper,
+			DOMref.commentBox.button.submit
+		);
+
+		expect(element1.length).toEqual(1);
+		expect(element2.length).toEqual(1);
 	});
 });
 
-describe('textarea behaviour', () => {
+describe('[textarea_comment-box] behaviour', () => {
 	let wrapper;
 	const testStr = 'test';
 	beforeEach(() => {
@@ -40,17 +65,20 @@ describe('textarea behaviour', () => {
 				<CommentBox />
 			</Root>
 		);
-		onChange(wrapper.find('textarea'), testStr);
+		let element = findBy.attribute.test(wrapper, DOMref.commentBox.textarea);
+		handlers.onChange(element, testStr);
 		wrapper.update();
 	});
 
 	test('should trigger onChange listener when typed in', () => {
-		expect(wrapper.find('textarea').prop('value')).toEqual(testStr);
+		let element = findBy.attribute.test(wrapper, DOMref.commentBox.textarea);
+		expect(element.prop('value')).toEqual(testStr);
 	});
 
 	test('should get empty after the form is submitted', () => {
-		onSubmitDefaultPrevented(wrapper.find('form'));
+		handlers.onSubmitDefaultPrevented(wrapper.find('form'));
 		wrapper.update();
-		expect(wrapper.find('textarea').prop('value')).toEqual('');
+		let element = findBy.attribute.test(wrapper, DOMref.commentBox.textarea);
+		expect(element.prop('value')).toEqual('');
 	});
 });

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import * as actions from 'actions';
-import { commentBox } from 'utils/test/DOMreferences';
+import DOMref from 'utils/test/DOMreferences';
 
 function CommentBox(props) {
 	const [comment, setComment] = useState('');
@@ -19,19 +19,29 @@ function CommentBox(props) {
 	}
 
 	return (
-		<div>
-			<form id='form-comment' onSubmit={onSubmitHandler}>
-				<h4>Add a Comment</h4>
-				<textarea value={comment} onChange={onChangeHandler} />
-				<div>
-					<button type='submit' form='form-comment'>
-						Submit Comment
-					</button>
-				</div>
+		<div data-test={DOMref.commentBox.wrapper}>
+			<form
+				id='form-comment'
+				onSubmit={onSubmitHandler}
+				data-test={DOMref.commentBox.form}
+			>
+				<h4 data-test={DOMref.commentBox.header}>Add a Comment</h4>
+				<textarea
+					value={comment}
+					onChange={onChangeHandler}
+					data-test={DOMref.commentBox.textarea}
+				/>
+				<button
+					type='submit'
+					form='form-comment'
+					data-test={DOMref.commentBox.button.submit}
+				>
+					Submit Comment
+				</button>
 			</form>
 			<button
 				onClick={props.fetchComments}
-				data-test={commentBox.button.fetchComments}
+				data-test={DOMref.commentBox.button.fetchComments}
 			>
 				Fetch Comments
 			</button>
