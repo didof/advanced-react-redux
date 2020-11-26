@@ -1,4 +1,4 @@
-import { SAVE_COMMENT, REMOVE_COMMENT, FETCH_COMMENTS } from './types';
+import * as types from './types';
 import axios from 'axios';
 import { jsonPlaceholder } from 'utils/urls';
 
@@ -23,16 +23,24 @@ export function buildAction(type, payload = null) {
  * @returns {object} saveComment action
  */
 export function saveComment(comment) {
-	return buildAction(SAVE_COMMENT, comment);
+	return buildAction(types.SAVE_COMMENT, comment);
 }
 
 export function removeComment(index) {
-	return buildAction(REMOVE_COMMENT, index);
+	return buildAction(types.REMOVE_COMMENT, index);
 }
 
 export function fetchComments() {
 	const url = jsonPlaceholder.comments();
 	const response = axios.get(url);
 
-	return buildAction(FETCH_COMMENTS, response);
+	return buildAction(types.FETCH_COMMENTS, response);
+}
+
+export function signIn() {
+	return buildAction(types.SING_IN);
+}
+
+export function signOut() {
+	return buildAction(types.SIGN_OUT);
 }

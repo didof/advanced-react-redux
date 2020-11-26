@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import * as actions from 'actions';
+import { saveComment, fetchComments } from 'actions';
 import DOMref from 'utils/test/DOMreferences';
 
 function CommentBox(props) {
@@ -31,13 +31,15 @@ function CommentBox(props) {
 					onChange={onChangeHandler}
 					data-test={DOMref.commentBox.textarea}
 				/>
-				<button
-					type='submit'
-					form='form-comment'
-					data-test={DOMref.commentBox.button.submit}
-				>
-					Submit Comment
-				</button>
+				<div>
+					<button
+						type='submit'
+						form='form-comment'
+						data-test={DOMref.commentBox.button.submit}
+					>
+						Submit Comment
+					</button>
+				</div>
 			</form>
 			<button
 				onClick={props.fetchComments}
@@ -49,4 +51,4 @@ function CommentBox(props) {
 	);
 }
 
-export default connect(null, actions)(CommentBox);
+export default connect(null, { saveComment, fetchComments })(CommentBox);

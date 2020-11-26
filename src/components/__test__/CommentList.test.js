@@ -1,10 +1,11 @@
-import Root from 'Root';
+import React from 'react';
 import { mount } from 'enzyme';
 import { getRandomIntInclusive } from 'utils/math';
 import { generateItems } from 'utils/generate';
 import findBy from 'utils/test/findBy';
 import DOMref from 'utils/test/DOMreferences';
 
+import Root from 'Root';
 import CommentList from 'components/CommentList';
 
 function setupWrapper(initialState = {}) {
@@ -27,6 +28,12 @@ describe('renders without errors', () => {
 	test('should render [wrapper_comment-list] element', () => {
 		wrapper = setupWrapper();
 		let element = findBy.attribute.test(wrapper, DOMref.commentList.wrapper);
+		expect(element.length).toEqual(1);
+	});
+
+	test('should render [header_comment-list] element', () => {
+		wrapper = setupWrapper();
+		let element = findBy.attribute.test(wrapper, DOMref.commentList.header);
 		expect(element.length).toEqual(1);
 	});
 

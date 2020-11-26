@@ -23,7 +23,12 @@ function CommentList(props) {
 		return <ul data-test={DOMref.commentList.list}>{li}</ul>;
 	}
 
-	return <div data-test={DOMref.commentList.wrapper}>{buildCommentsList()}</div>;
+	return (
+		<div data-test={DOMref.commentList.wrapper}>
+			<h4 data-test={DOMref.commentList.header}>Comment List</h4>
+			{buildCommentsList()}
+		</div>
+	);
 }
 
 function mapStateToProps(state) {

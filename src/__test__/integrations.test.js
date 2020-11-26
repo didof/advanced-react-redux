@@ -1,4 +1,5 @@
 import React from 'react';
+import { MemoryRouter } from 'react-router-dom';
 import { mount } from 'enzyme';
 import moxios from 'moxios';
 
@@ -27,7 +28,9 @@ describe('CommentBox', () => {
 		// Attemp to render the entire app
 		const wrapper = mount(
 			<Root>
-				<App />
+				<MemoryRouter initialEntries={['/post']}>
+					<App />
+				</MemoryRouter>
 			</Root>
 		);
 
@@ -36,6 +39,7 @@ describe('CommentBox', () => {
 			wrapper,
 			DOMref.commentBox.button.fetchComments
 		);
+		expect(button.length).toEqual(1);
 		button.simulate('click');
 
 		// Expect to retrieve 10 elements
@@ -43,10 +47,13 @@ describe('CommentBox', () => {
 			let request = moxios.requests.mostRecent();
 			request.respondWith(mockedResponse).then(() => {
 				wrapper.update();
-				expect(wrapper.find('ul').children().length).toEqual(10);
+				let element = findBy.attribute.test(wrapper, DOMref.commentList.list);
+				expect(element.children().length).toEqual(10);
 				wrapper.unmount();
 				done(); // note the calling of done as last thing
 			});
 		});
 	});
 });
+
+// TODO: try to understand hwo to maxim the timeout timing
