@@ -1,4 +1,6 @@
-import { SAVE_COMMENT } from './types';
+import { SAVE_COMMENT, REMOVE_COMMENT, FETCH_COMMENTS } from './types';
+import axios from 'axios';
+import { jsonPlaceholder } from 'utils/urls';
 
 /**
  * It has the function of creating an object with two properties, type and payload.
@@ -22,4 +24,17 @@ export function buildAction(type, payload = null) {
  */
 export function saveComment(comment) {
 	return buildAction(SAVE_COMMENT, comment);
+}
+
+export function removeComment(index) {
+	let action = buildAction(REMOVE_COMMENT, index);
+	console.log(action);
+	return action;
+}
+
+export function fetchComments() {
+	const url = jsonPlaceholder.comments();
+	const response = axios.get(url);
+
+	return buildAction(FETCH_COMMENTS, response);
 }

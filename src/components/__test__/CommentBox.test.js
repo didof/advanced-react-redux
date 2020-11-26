@@ -4,7 +4,7 @@ import { mount } from 'enzyme';
 
 import CommentBox from 'components/CommentBox';
 
-import * as utils from 'tests/utils';
+import { onSubmitDefaultPrevented, onChange } from 'utils/test/handlers';
 
 describe('renders without errors', () => {
 	let wrapper;
@@ -25,9 +25,9 @@ describe('renders without errors', () => {
 		expect(texarea.length).toEqual(1);
 	});
 
-	test('should render 1 button', () => {
+	test('should render 2 buttons', () => {
 		let button = wrapper.find('button');
-		expect(button.length).toEqual(1);
+		expect(button.length).toEqual(2);
 	});
 });
 
@@ -40,7 +40,7 @@ describe('textarea behaviour', () => {
 				<CommentBox />
 			</Root>
 		);
-		utils.onChangeHandler(wrapper.find('textarea'), testStr);
+		onChange(wrapper.find('textarea'), testStr);
 		wrapper.update();
 	});
 
@@ -49,7 +49,7 @@ describe('textarea behaviour', () => {
 	});
 
 	test('should get empty after the form is submitted', () => {
-		utils.onSubmitDefaultPrevented(wrapper.find('form'));
+		onSubmitDefaultPrevented(wrapper.find('form'));
 		wrapper.update();
 		expect(wrapper.find('textarea').prop('value')).toEqual('');
 	});

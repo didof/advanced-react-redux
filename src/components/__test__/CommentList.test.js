@@ -1,6 +1,7 @@
 import Root from 'Root';
 import * as enzyme from 'enzyme';
-// import * as utils from 'tests/utils';
+import { getRandomIntInclusive } from 'utils/math';
+import { generateItems } from 'utils/generate';
 
 import CommentList from 'components/CommentList';
 
@@ -16,21 +17,6 @@ function createInitialState(commentsArr) {
 	return {
 		comments: commentsArr,
 	};
-}
-
-function getRandomIntInclusive(min, max) {
-	min = Math.ceil(min);
-	max = Math.floor(max);
-	return Math.floor(Math.random() * (max - min - 1) + min);
-}
-
-function generateRandomComments(quantity) {
-	if (!quantity) quantity = getRandomIntInclusive(1, 5);
-	let output = [];
-	for (let i = 0; i < quantity; i++) {
-		output.push(`comment ${i + 1}`);
-	}
-	return output;
 }
 
 describe('renders without errors', () => {
@@ -50,9 +36,22 @@ describe('renders without errors', () => {
 
 	test('should render the same number of li and comments supplied', () => {
 		let randomQuantity = getRandomIntInclusive(1, 5);
-		let randomComments = generateRandomComments(randomQuantity);
+		let randomComments = generateItems(randomQuantity, 'comment');
 		wrapper = setupWrapper(createInitialState(randomComments));
 		let li = wrapper.find('li');
 		expect(li.length).toBe(randomQuantity);
+	});
+});
+
+describe('li behaviour', () => {
+	let wrapper;
+	const comment1 = 'comment 1';
+	const comment2 = 'comment 2';
+
+	test('should make visible the text contained in li', () => {
+		wrapper = setupWrapper(createInitialState([comment1, comment2]));
+		let text = wrapper.render().text();
+		expect(text).toContain(comment1);
+		expect(text).toContain(comment2);
 	});
 });
