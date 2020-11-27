@@ -14,6 +14,9 @@ export default function commentsReducer(state = initialState, action) {
 			const { data } = action.payload;
 			const comments = data.slice(0, 10).map((el) => el.name);
 			return [...state, ...comments];
+		case actionTypes.REMOVE_COMMENT_NOT_ALLOWED:
+			console.log('only Admin can remove comments');
+			return state;
 		default:
 			return state;
 	}

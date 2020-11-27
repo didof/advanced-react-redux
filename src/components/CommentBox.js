@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from 'react';
+// react
+import React, { useState } from 'react';
+
+// redux
 import { connect } from 'react-redux';
 import { saveComment, fetchComments } from 'actions';
+
+// hoc
+import { requireAuth } from 'hoc';
+
+// testing
 import DOMref from 'utils/test/DOMreferences';
 
 function CommentBox(props) {
 	const [comment, setComment] = useState('');
-
-	useEffect(() => {
-		if (!props.auth) {
-			props.history.replace('/');
-		}
-	}, [props.history, props.auth]);
 
 	function onChangeHandler(event) {
 		setComment((prev) => event.target.value);
@@ -57,12 +59,6 @@ function CommentBox(props) {
 	);
 }
 
-function mapStateToProps(state) {
-	return {
-		auth: state.auth,
-	};
-}
-
-export default connect(mapStateToProps, { saveComment, fetchComments })(
-	CommentBox
+export default connect(null, { saveComment, fetchComments })(
+	requireAuth(CommentBox)
 );

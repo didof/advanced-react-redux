@@ -27,7 +27,12 @@ export function saveComment(comment) {
 }
 
 export function removeComment(index) {
-	return buildAction(types.REMOVE_COMMENT, index);
+	console.log('removeComment');
+	return function (dispatch, getState) {
+		const { auth } = getState();
+		if (auth) return dispatch(buildAction(types.REMOVE_COMMENT, index));
+		else return dispatch(buildAction(types.REMOVE_COMMENT_NOT_ALLOWED));
+	};
 }
 
 export function fetchComments() {
