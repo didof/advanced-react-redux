@@ -55,5 +55,3 @@ describe('CommentBox', () => {
 		});
 	});
 });
-
-// TODO: try to understand hwo to maxim the timeout timing

@@ -11,35 +11,46 @@ import RouterLink from 'entities/RouterLink';
 import DOMref from 'utils/test/DOMreferences';
 
 function Header(props) {
+	const adminAuthenticationConfiguration = [
+		{
+			label: 'Sing Out',
+			onClick: props.signOut,
+			'data-test': DOMref.header.button.adminSignOut,
+		},
+		{
+			label: 'Sing In',
+			onClick: props.signIn,
+			'data-test': DOMref.header.button.adminSignIn,
+		},
+	];
+
+	const navigationLinksConfiguration = [
+		{
+			label: 'Home',
+			url: '/',
+		},
+		{
+			label: 'post',
+		},
+	];
+
+	function buildAdminAuthenticationButton(config) {
+		return (
+			<button onClick={config.onClick} data-test={config['data-test']}>
+				{config.label}
+			</button>
+		);
+	}
+
 	function buildAdminButton() {
-		if (props.auth)
-			return (
-				<button
-					onClick={props.signOut}
-					data-test={DOMref.header.button.adminSignOut}
-				>
-					Sign Out
-				</button>
-			);
-		else
-			return (
-				<button onClick={props.signIn} data-test={DOMref.header.button.adminSignIn}>
-					Sign In
-				</button>
-			);
+		let selectedIndex = props.auth ? 0 : 1;
+		return buildAdminAuthenticationButton(
+			adminAuthenticationConfiguration[selectedIndex]
+		);
 	}
 
 	function buildLinksList() {
-		const links = [
-			{
-				label: 'Home',
-				url: '/',
-			},
-			{
-				label: 'post',
-			},
-		];
-		return links
+		return navigationLinksConfiguration
 			.map((el) => new RouterLink(el.label, el.url))
 			.map((el, i) => {
 				return <li key={`header-${i}`}>{el.component}</li>;
