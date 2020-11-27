@@ -27,7 +27,6 @@ export function saveComment(comment) {
 }
 
 export function removeComment(index) {
-	console.log('removeComment');
 	return function (dispatch, getState) {
 		const { auth } = getState();
 		if (auth) return dispatch(buildAction(types.REMOVE_COMMENT, index));
@@ -36,10 +35,12 @@ export function removeComment(index) {
 }
 
 export function fetchComments() {
-	const url = jsonPlaceholder.comments();
-	const response = axios.get(url);
-
-	return buildAction(types.FETCH_COMMENTS, response);
+	return function (dispatch) {
+		const url = jsonPlaceholder.comments();
+		axios.get(url).then((response) => {
+			return dispatch(buildAction(types.FETCH_COMMENTS, response));
+		});
+	};
 }
 
 export function signIn() {
