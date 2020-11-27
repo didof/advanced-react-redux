@@ -1,5 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
+import { MemoryRouter } from 'react-router-dom';
 import DOMref from 'utils/test/DOMreferences';
 import findBy from 'utils/test/findBy';
 import handlers from 'utils/test/handlers';
@@ -7,14 +8,26 @@ import handlers from 'utils/test/handlers';
 import Root from 'Root';
 import CommentBox from 'components/CommentBox';
 
+function mountWithAuthAndPath(auth, path) {
+	return mount(
+		<Root initialState={createInitialState(auth)}>
+			<MemoryRouter initialEntries={[path]}>
+				<CommentBox />
+			</MemoryRouter>
+		</Root>
+	);
+}
+
+function createInitialState(authState) {
+	return {
+		auth: authState,
+	};
+}
+
 describe('renders without errors', () => {
 	let wrapper;
 	beforeEach(() => {
-		wrapper = mount(
-			<Root>
-				<CommentBox />
-			</Root>
-		);
+		wrapper = mountWithAuthAndPath(true, '/post');
 	});
 
 	afterEach(() => {
@@ -60,11 +73,7 @@ describe('[textarea_comment-box] behaviour', () => {
 	let wrapper;
 	const testStr = 'test';
 	beforeEach(() => {
-		wrapper = mount(
-			<Root>
-				<CommentBox />
-			</Root>
-		);
+		wrapper = wrapper = mountWithAuthAndPath(true, '/post');
 		let element = findBy.attribute.test(wrapper, DOMref.commentBox.textarea);
 		handlers.onChange(element, testStr);
 		wrapper.update();
