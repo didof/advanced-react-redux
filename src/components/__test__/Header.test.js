@@ -97,3 +97,41 @@ describe('renders', () => {
 		});
 	});
 });
+
+describe('Admin authentication elements behaviour', () => {
+	let wrapper;
+	function getElement(DOMref) {
+		return findBy.attribute.test(wrapper, DOMref);
+	}
+
+	afterEach(() => {
+		wrapper.unmount();
+	});
+
+	test('clicking on [adminSignIn_header] element should replace it with [adminSignOut_header]', () => {
+		wrapper = mountWithAuthAndPath(false, '/');
+		let signOutElement = getElement(DOMref.header.button.adminSignOut);
+		let signInElement = getElement(DOMref.header.button.adminSignIn);
+		expect(signOutElement.length).toEqual(0);
+		expect(signInElement.length).toEqual(1);
+		signInElement.simulate('click');
+		wrapper.update();
+		let updatedSignOutElement = getElement(DOMref.header.button.adminSignOut);
+		let updatedSignInElement = getElement(DOMref.header.button.adminSignIn);
+		expect(updatedSignOutElement.length).toEqual(1);
+		expect(updatedSignInElement.length).toEqual(0);
+	});
+	test('clicking on [adminSignOut_header] element should replace it with [adminSignIn_header]', () => {
+		wrapper = mountWithAuthAndPath(true, '/');
+		let signOutElement = getElement(DOMref.header.button.adminSignOut);
+		let signInElement = getElement(DOMref.header.button.adminSignIn);
+		expect(signOutElement.length).toEqual(1);
+		expect(signInElement.length).toEqual(0);
+		signOutElement.simulate('click');
+		wrapper.update();
+		let updatedSignOutElement = getElement(DOMref.header.button.adminSignOut);
+		let updatedSignInElement = getElement(DOMref.header.button.adminSignIn);
+		expect(updatedSignOutElement.length).toEqual(0);
+		expect(updatedSignInElement.length).toEqual(1);
+	});
+});

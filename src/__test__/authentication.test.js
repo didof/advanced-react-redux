@@ -28,22 +28,23 @@ describe('admin authentication', () => {
 	let wrapper;
 	let confirmSpy;
 
-	beforeAll(() => {
-		confirmSpy = jest.spyOn(window, 'confirm');
-		confirmSpy.mockImplementation(jest.fn(() => 'admin'));
-	});
-
 	afterAll(() => {
 		confirmSpy.mockRestore();
 	});
 
 	test('should change admin auth state to true if correct password', () => {
 		wrapper = mountWithAuthAndPath(false);
-		const element = findBy.attribute.test(
+		let element = findBy.attribute.test(
 			wrapper,
 			DOMref.header.button.adminSignIn
 		);
 		expect(element.length).toEqual(1);
+
+		element.simulate('click');
+		wrapper.update();
+
+		let props = wrapper.find(App);
+		console.log(props);
 	});
 	// test('should change admin auth state to true if not correct password', () => {});
 });
