@@ -26,21 +26,27 @@ export function saveComment(comment) {
 	return buildAction(types.SAVE_COMMENT, comment);
 }
 
-export function removeComment(index) {
-	return function (dispatch, getState) {
-		const { auth } = getState();
-		if (auth) return dispatch(buildAction(types.REMOVE_COMMENT, index));
-		else return dispatch(buildAction(types.REMOVE_COMMENT_NOT_ALLOWED));
-	};
-}
+// export function removeComment(index) {
+// 	return function (dispatch, getState) {
+// 		const { auth } = getState();
+// 		if (auth) return dispatch(buildAction(types.REMOVE_COMMENT, index));
+// 		else return dispatch(buildAction(types.REMOVE_COMMENT_NOT_ALLOWED));
+// 	};
+// }
+
+// export function fetchComments() {
+// 	return function (dispatch) {
+// 		const url = jsonPlaceholder.comments();
+// 		axios.get(url).then((response) => {
+// 			return dispatch(buildAction(types.FETCH_COMMENTS, response));
+// 		});
+// 	};
+// }
 
 export function fetchComments() {
-	return function (dispatch) {
-		const url = jsonPlaceholder.comments();
-		axios.get(url).then((response) => {
-			return dispatch(buildAction(types.FETCH_COMMENTS, response));
-		});
-	};
+	const url = jsonPlaceholder.comments();
+	const response = axios.get(url);
+	return buildAction(types.FETCH_COMMENTS, response);
 }
 
 export function signIn() {

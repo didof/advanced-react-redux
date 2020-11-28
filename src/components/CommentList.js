@@ -12,7 +12,8 @@ function CommentList(props) {
 						return (
 							<li
 								key={index}
-								onClick={props.removeComment.bind(this, index)}
+								// should use thunk in order to do removeComment
+								// onClick={props.removeComment.bind(this, index)}
 								data-test={DOMref.commentList.listItem}
 							>
 								{el}
